@@ -35,7 +35,9 @@ if [ ! -d "$BACKEND_DIR" ]; then
     git clone "$BACKEND_REPO" "$BACKEND_DIR"
     ok "Backend cloned"
 else
-    ok "Backend repo already exists"
+    info "Pulling latest backend..."
+    git -C "$BACKEND_DIR" pull --ff-only || info "Backend: could not fast-forward, skipping pull"
+    ok "Backend up to date"
 fi
 
 if [ ! -d "$FRONTEND_DIR" ]; then
@@ -43,7 +45,9 @@ if [ ! -d "$FRONTEND_DIR" ]; then
     git clone "$FRONTEND_REPO" "$FRONTEND_DIR"
     ok "Frontend cloned"
 else
-    ok "Frontend repo already exists"
+    info "Pulling latest frontend..."
+    git -C "$FRONTEND_DIR" pull --ff-only || info "Frontend: could not fast-forward, skipping pull"
+    ok "Frontend up to date"
 fi
 
 # --- Backend .env ---
