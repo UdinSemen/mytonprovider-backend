@@ -19,16 +19,14 @@ else
     cd "$REPO_DIR"
 fi
 
-# Hard replace backend host in lib/api.ts
 if [ "$INSTALL_SSL" = "true" ]; then
     PROTOCOL="https"
 else
     PROTOCOL="http"
 fi
 
-echo "Replacing backend host in lib/api.ts with $PROTOCOL://$HOST"
-sed -i "s|https://mytonprovider.org|$PROTOCOL://$HOST|g" lib/api.ts
-
+echo "Setting backend URL to $PROTOCOL://$HOST"
+export NEXT_PUBLIC_API_URL="$PROTOCOL://$HOST"
 
 echo "Installing npm dependencies..."
 npm install --legacy-peer-deps

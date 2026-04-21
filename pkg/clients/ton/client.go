@@ -19,7 +19,7 @@ import (
 
 const (
 	getProvidersRetries = 5
-	retries             = 20
+	retries             = 3
 	parrallelRequests   = 30
 	batch               = 100
 	singleQueryTimeout  = 5 * time.Second
