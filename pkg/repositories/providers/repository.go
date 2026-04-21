@@ -141,13 +141,13 @@ func (r *repository) GetFiltersRange(ctx context.Context) (filtersRange db.Filte
 		SELECT 
 			-- Provider ranges
 			COALESCE(MAX(p.rating), 5.0) + 0.1 as rating_max,
-			MAX(EXTRACT(DAYS FROM (NOW() - p.registered_at)))::bigint as reg_time_days_max,
+			COALESCE(MAX(EXTRACT(DAYS FROM (NOW() - p.registered_at)))::bigint, 0) as reg_time_days_max,
 			COALESCE(MIN(p.min_span), 0)::bigint as min_span_min,
 			COALESCE(MAX(p.min_span), 0)::bigint as min_span_max,
 			COALESCE(MIN(p.max_span), 0)::bigint as max_span_min,
 			COALESCE(MAX(p.max_span), 0)::bigint as max_span_max,
-			MIN(p.max_bag_size_bytes / 1024 / 1024)::bigint as max_bag_size_mb_min,
-			MAX(p.max_bag_size_bytes / 1024 / 1024)::bigint as max_bag_size_mb_max,
+			COALESCE(MIN(p.max_bag_size_bytes / 1024 / 1024)::bigint, 0) as max_bag_size_mb_min,
+			COALESCE(MAX(p.max_bag_size_bytes / 1024 / 1024)::bigint, 0) as max_bag_size_mb_max,
 			COALESCE(MAX(p.rate_per_mb_per_day * 1024 * 200 * 30), 0.0) + 0.1 as price_max,
 			ARRAY(
 				SELECT DISTINCT
